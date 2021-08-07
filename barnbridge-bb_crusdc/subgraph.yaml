@@ -1,0 +1,44 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: bb_crUSDC
+    network: mainnet
+    source:
+      address: "0x62e479060c89C48199FC7ad43b1432CC585BA1b9"
+      abi: bb_crUSDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - BuyJuniorBond
+        - BuySeniorBond
+        - BuyTokens
+        - RedeemJuniorBond
+        - RedeemSeniorBond
+        - SellTokens
+        - Transfer
+      abis:
+        - name: bb_crUSDC
+          file: ./abis/bb_crUSDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: BuyJuniorBond(indexed address,indexed uint256,uint256,uint256)
+          handler: handleBuyJuniorBond
+        - event: BuySeniorBond(indexed address,indexed uint256,uint256,uint256,uint256)
+          handler: handleBuySeniorBond
+        - event: BuyTokens(indexed address,uint256,uint256,uint256)
+          handler: handleBuyTokens
+        - event: RedeemJuniorBond(indexed address,indexed uint256,uint256)
+          handler: handleRedeemJuniorBond
+        - event: RedeemSeniorBond(indexed address,indexed uint256,uint256)
+          handler: handleRedeemSeniorBond
+        - event: SellTokens(indexed address,uint256,uint256,uint256)
+          handler: handleSellTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts

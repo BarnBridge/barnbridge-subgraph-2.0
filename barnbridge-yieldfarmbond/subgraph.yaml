@@ -1,0 +1,26 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: YieldFarmBond
+    network: mainnet
+    source:
+      address: "0x3FdFb07472ea4771E1aD66FD3b87b265Cd4ec112"
+      abi: YieldFarmBond
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Harvest
+        - MassHarvest
+      abis:
+        - name: YieldFarmBond
+          file: ./abis/YieldFarmBond.json
+      eventHandlers:
+        - event: Harvest(indexed address,indexed uint128,uint256)
+          handler: handleHarvest
+        - event: MassHarvest(indexed address,uint256,uint256)
+          handler: handleMassHarvest
+      file: ./src/mapping.ts

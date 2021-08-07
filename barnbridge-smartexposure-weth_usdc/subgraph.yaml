@@ -1,0 +1,53 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SmartExposure_WETH_USDC
+    network: mainnet
+    source:
+      address: "0x9625885db4e75e9dccf856e640886853bc6d6584"
+      abi: SmartExposure_WETH_USDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - AddedTranche
+        - IssuedEToken
+        - RebalancedTranches
+        - RecoveredToken
+        - RedeemedEToken
+        - SetAggregator
+        - SetController
+        - SetFeeRate
+        - SetMinRDiv
+        - SetRebalanceInterval
+        - TransferFees
+      abis:
+        - name: SmartExposure_WETH_USDC
+          file: ./abis/SmartExposure_WETH_USDC.json
+      eventHandlers:
+        - event: AddedTranche(indexed address)
+          handler: handleAddedTranche
+        - event: IssuedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleIssuedEToken
+        - event: RebalancedTranches(uint256,uint256,uint256,uint256)
+          handler: handleRebalancedTranches
+        - event: RecoveredToken(address,uint256)
+          handler: handleRecoveredToken
+        - event: RedeemedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleRedeemedEToken
+        - event: SetAggregator(address,bool)
+          handler: handleSetAggregator
+        - event: SetController(address)
+          handler: handleSetController
+        - event: SetFeeRate(uint256)
+          handler: handleSetFeeRate
+        - event: SetMinRDiv(uint256)
+          handler: handleSetMinRDiv
+        - event: SetRebalanceInterval(uint256)
+          handler: handleSetRebalanceInterval
+        - event: TransferFees(indexed address,uint256,uint256)
+          handler: handleTransferFees
+      file: ./src/mapping.ts

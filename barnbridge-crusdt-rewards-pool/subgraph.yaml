@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: crUSDTRewardsPool
+    network: mainnet
+    source:
+      address: "0xEA32E4E751D49757906E1153eF7A30fCAb1b6462"
+      abi: crUSDTRewardsPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Claim
+        - Deposit
+        - OwnershipTransferred
+        - Withdraw
+      abis:
+        - name: crUSDTRewardsPool
+          file: ./abis/crUSDTRewardsPool.json
+      eventHandlers:
+        - event: Claim(indexed address,uint256)
+          handler: handleClaim
+        - event: Deposit(indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Withdraw(indexed address,uint256,uint256)
+          handler: handleWithdraw
+      file: ./src/mapping.ts

@@ -1,0 +1,32 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SmartExposure_WETH_USDC_50_50
+    network: mainnet
+    source:
+      address: "0x894b65cfae8a48f2098411a9e0ff3b138722ed12"
+      abi: SmartExposure_WETH_USDC_50_50
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - RecoveredToken
+        - SetController
+        - Transfer
+      abis:
+        - name: SmartExposure_WETH_USDC_50_50
+          file: ./abis/SmartExposure_WETH_USDC_50_50.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: RecoveredToken(address,uint256)
+          handler: handleRecoveredToken
+        - event: SetController(address)
+          handler: handleSetController
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts

@@ -1,2 +1,2 @@
-# barnbridge-subgraph-2.0
-Subgraphs for all public BarnBridge contracts on Ethereum Mainnet
+# barnbridge-subgraph-v2
+Subgraphs on the TheGraph Decentralized Service for all BarnBridge contracts deployed on the Ethereum Mainnet

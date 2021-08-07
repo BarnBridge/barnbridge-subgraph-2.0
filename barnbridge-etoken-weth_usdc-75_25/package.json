@@ -1,0 +1,16 @@
+{
+  "name": "barnbridge-etoken-weth_usdc-75_25",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ barnbridge-etoken-weth_usdc-75_25",
+    "create-local": "graph create --node http://localhost:8020/ barnbridge-etoken-weth_usdc-75_25",
+    "remove-local": "graph remove --node http://localhost:8020/ barnbridge-etoken-weth_usdc-75_25",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 barnbridge-etoken-weth_usdc-75_25"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.21.0",
+    "@graphprotocol/graph-ts": "0.20.0"
+  }
+}
