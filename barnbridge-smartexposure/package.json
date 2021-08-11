@@ -2,8 +2,7 @@
   "name": "barnbridge-smartexposure-subgraph",
   "license": "UNLICENSED",
   "scripts": {
-    "codegen": "graph codegen",
-    "build": "graph build",
+    "build": "NETWORK=local NO_DEPLOY=true ./deploy.sh",
     "deploy:local": "NETWORK=local ./deploy.sh"
   },
   "dependencies": {

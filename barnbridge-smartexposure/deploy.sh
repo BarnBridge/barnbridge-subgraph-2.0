@@ -10,12 +10,16 @@ if [[ -z $NETWORK || ! " ${networks[@]} " =~ " ${NETWORK} " ]]; then
   exit 1
 fi
 
-
 mustache config/$NETWORK.json subgraph.template.yaml > subgraph.yaml
 
 # Run codegen and build
-npm run codegen 
-npm run build
+graph codegen 
+graph build
+
+if [[ "$NO_DEPLOY" = true ]]; then
+  rm subgraph.yaml
+  exit 0
+fi
 
 # Use custom subgraph name based on target network
 SUBGRAPH_EXT="-${NETWORK}"
