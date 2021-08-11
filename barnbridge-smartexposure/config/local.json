@@ -1,0 +1,6 @@
+{
+  "network": "mainnet",
+  "description": "BarnBridge Smart Exposure (local)",
+  "startBlock": 12760848,
+  "EPool": "0x9625885db4e75e9dccf856e640886853bc6d6584"
+}
