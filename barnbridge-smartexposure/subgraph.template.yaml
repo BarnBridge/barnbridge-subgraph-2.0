@@ -35,8 +35,6 @@ dataSources:
           handler: handleIssuedEToken
         - event: RebalancedTranches(uint256,uint256,uint256,uint256)
           handler: handleRebalancedTranches
-        - event: RecoveredToken(address,uint256)
-          handler: handleRecoveredToken
         - event: RedeemedEToken(indexed address,uint256,uint256,uint256,address)
           handler: handleRedeemedEToken
         - event: SetAggregator(address,bool)
@@ -45,10 +43,6 @@ dataSources:
           handler: handleSetController
         - event: SetFeeRate(uint256)
           handler: handleSetFeeRate
-        - event: SetMinRDiv(uint256)
-          handler: handleSetMinRDiv
-        - event: SetRebalanceInterval(uint256)
-          handler: handleSetRebalanceInterval
         - event: TransferFees(indexed address,uint256,uint256)
           handler: handleTransferFees
       file: ./src/mapping.ts

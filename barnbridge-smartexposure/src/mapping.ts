@@ -1,107 +1,123 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { log, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
-  EPool,
+  EPool as EPoolContract,
   AddedTranche,
-  IssuedEToken,
-  RebalancedTranches,
-  RecoveredToken,
-  RedeemedEToken,
-  SetAggregator,
   SetController,
+  SetAggregator,
   SetFeeRate,
-  SetMinRDiv,
-  SetRebalanceInterval,
-  TransferFees
+  TransferFees,
+  IssuedEToken,
+  RedeemedEToken,
+  RebalancedTranches
 } from "../generated/EPool/EPool"
-import { ExampleEntity } from "../generated/schema"
+import { EPool, Tranche } from "../generated/schema"
 
-export function handleAddedTranche(event: AddedTranche): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.eToken = event.params.eToken
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.FEE_RATE_LIMIT(...)
-  // - contract.TRANCHE_LIMIT(...)
-  // - contract.addTranche(...)
-  // - contract.cumulativeFeeA(...)
-  // - contract.cumulativeFeeB(...)
-  // - contract.eTokenFactory(...)
-  // - contract.feeRate(...)
-  // - contract.getAggregator(...)
-  // - contract.getController(...)
-  // - contract.getRate(...)
-  // - contract.getTranche(...)
-  // - contract.getTranches(...)
-  // - contract.issueExact(...)
-  // - contract.lastRebalance(...)
-  // - contract.rebalance(...)
-  // - contract.rebalanceInterval(...)
-  // - contract.rebalanceMinRDiv(...)
-  // - contract.recover(...)
-  // - contract.redeemExact(...)
-  // - contract.sFactorA(...)
-  // - contract.sFactorB(...)
-  // - contract.setAggregator(...)
-  // - contract.setController(...)
-  // - contract.setFeeRate(...)
-  // - contract.setMinRDiv(...)
-  // - contract.setRebalanceInterval(...)
-  // - contract.tokenA(...)
-  // - contract.tokenB(...)
-  // - contract.tranches(...)
-  // - contract.tranchesByIndex(...)
-  // - contract.transferFees(...)
+function createEPoolIfNonExistent(ePoolAddress: Address): EPool {
+  let ePoolContract = EPoolContract.bind(ePoolAddress);
+  let ePool = EPool.load(ePoolAddress.toHex());
+  if (ePool != null) return ePool as EPool;
+  ePool = new EPool(ePoolAddress.toHex());
+  ePool.controller = ePoolContract.getController();
+  ePool.eTokenFactory = ePoolContract.eTokenFactory();
+  ePool.aggregator = ePoolContract.getAggregator();
+  ePool.tokenA = ePoolContract.tokenA();
+  ePool.tokenB = ePoolContract.tokenB();
+  ePool.sFactorA = ePoolContract.sFactorA();
+  ePool.sFactorB = ePoolContract.sFactorB();
+  ePool.feeRate = BigInt.fromI32(0);
+  ePool.cumulativeFeeA = BigInt.fromI32(0);
+  ePool.cumulativeFeeB = BigInt.fromI32(0);
+  ePool.tranches = [];
+  ePool.save();
+  log.debug("Saved EPool {}", [ePoolAddress.toHex()]);
+  return ePool as EPool;
 }
 
-export function handleIssuedEToken(event: IssuedEToken): void {}
+function createTrancheIfNonExistent(ePoolAddress: Address, eTokenAddress: Address): Tranche {
+  let ePoolContract = EPoolContract.bind(ePoolAddress);
+  let ePool = createEPoolIfNonExistent(ePoolAddress);
+  let tranche = Tranche.load(eTokenAddress.toHex());
+  if (tranche != null) return tranche as Tranche;
+  tranche = new Tranche(eTokenAddress.toHex());
+  let t = ePoolContract.getTranche(eTokenAddress);
+  tranche.eToken = eTokenAddress;
+  tranche.sFactorE = t.sFactorE;
+  tranche.reserveA = t.reserveA;
+  tranche.reserveB = t.reserveB;
+  tranche.targetRatio = t.targetRatio;
+  tranche.save();
+  let tranches = ePool.tranches;
+  tranches.push(tranche.id);
+  ePool.tranches = tranches;
+  ePool.save();
+  log.debug("Saved Tranche {}", [eTokenAddress.toHex()]);
+  return tranche as Tranche;
+}
 
-export function handleRebalancedTranches(event: RebalancedTranches): void {}
+export function handleSetController(event: SetController): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let ePool = createEPoolIfNonExistent(event.address);
+  ePool.controller = ePoolContract.getController();
+  ePool.save();
+}
 
-export function handleRecoveredToken(event: RecoveredToken): void {}
+export function handleSetAggregator(event: SetAggregator): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let ePool = createEPoolIfNonExistent(event.address);
+  ePool.aggregator = ePoolContract.getAggregator();
+  ePool.save();
+}
 
-export function handleRedeemedEToken(event: RedeemedEToken): void {}
+export function handleSetFeeRate(event: SetFeeRate): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let ePool = createEPoolIfNonExistent(event.address);
+  ePool.feeRate = ePoolContract.feeRate();
+  ePool.save();
+}
 
-export function handleSetAggregator(event: SetAggregator): void {}
+export function handleTransferFees(event: TransferFees): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let ePool = createEPoolIfNonExistent(event.address);
+  ePool.cumulativeFeeA = ePoolContract.cumulativeFeeA();
+  ePool.cumulativeFeeB = ePoolContract.cumulativeFeeB();
+  ePool.save();
+}
 
-export function handleSetController(event: SetController): void {}
+export function handleAddedTranche(event: AddedTranche): void {
+  createEPoolIfNonExistent(event.address)
+  createTrancheIfNonExistent(event.address, event.params.eToken);
+}
 
-export function handleSetFeeRate(event: SetFeeRate): void {}
+export function handleIssuedEToken(event: IssuedEToken): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let tranche = createTrancheIfNonExistent(event.address, event.params.eToken);
+  let t = ePoolContract.getTranche(event.params.eToken);
+  tranche.reserveA = t.reserveA;
+  tranche.reserveB = t.reserveB;
+  tranche.save();
+}
 
-export function handleSetMinRDiv(event: SetMinRDiv): void {}
+export function handleRedeemedEToken(event: RedeemedEToken): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  let ePool = createEPoolIfNonExistent(event.address);
+  ePool.cumulativeFeeA = ePoolContract.cumulativeFeeA();
+  ePool.cumulativeFeeB = ePoolContract.cumulativeFeeB();
+  ePool.save();
+  let tranche = createTrancheIfNonExistent(event.address, event.params.eToken);
+  let t = ePoolContract.getTranche(event.params.eToken);
+  tranche.reserveA = t.reserveA;
+  tranche.reserveB = t.reserveB;
+  tranche.save();
+}
 
-export function handleSetRebalanceInterval(event: SetRebalanceInterval): void {}
-
-export function handleTransferFees(event: TransferFees): void {}
+export function handleRebalancedTranches(event: RebalancedTranches): void {
+  let ePoolContract = EPoolContract.bind(event.address);
+  createEPoolIfNonExistent(event.address);
+  let tranches = ePoolContract.getTranches();
+  for (let i = 0; i < tranches.length; i++) {
+    let tranche = createTrancheIfNonExistent(event.address, tranches[i].eToken);
+    tranche.reserveA = tranches[i].reserveA;
+    tranche.reserveB = tranches[i].reserveB;
+    tranche.save();
+  }
+}
