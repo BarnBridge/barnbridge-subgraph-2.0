@@ -1,6 +1,11 @@
+type EToken @entity {
+  id: ID!
+  tranche: Tranche! @derivedFrom(field: "eToken")
+}
+
 type Tranche @entity {
   id: ID!
-  eToken: Bytes!
+  eToken: EToken!
   sFactorE: BigInt!
   reserveA: BigInt!
   reserveB: BigInt!

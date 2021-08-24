@@ -2,5 +2,6 @@
   "network": "mainnet",
   "description": "BarnBridge Smart Exposure (local)",
   "startBlock": 12760848,
-  "EPool": "0x9625885db4e75e9dccf856e640886853bc6d6584"
+  "EPool_WETH_USDC": "0x9625885db4e75e9dccf856e640886853bc6d6584",
+  "EPool_WETH_WBTC": "0x1ff76b7cc4252f8281f49f005ccf2ea477344830"
 }

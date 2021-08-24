@@ -9,13 +9,13 @@ import {
   IssuedEToken,
   RedeemedEToken,
   RebalancedTranches
-} from "../generated/EPool/EPool"
-import { EPool, Tranche } from "../generated/schema"
+} from "../generated/EPool_WETH_USDC/EPool"
+import { EPool, EToken, Tranche } from "../generated/schema"
 
 function createEPoolIfNonExistent(ePoolAddress: Address): EPool {
-  let ePoolContract = EPoolContract.bind(ePoolAddress);
   let ePool = EPool.load(ePoolAddress.toHex());
   if (ePool != null) return ePool as EPool;
+  let ePoolContract = EPoolContract.bind(ePoolAddress);
   ePool = new EPool(ePoolAddress.toHex());
   ePool.controller = ePoolContract.getController();
   ePool.eTokenFactory = ePoolContract.eTokenFactory();
@@ -34,13 +34,14 @@ function createEPoolIfNonExistent(ePoolAddress: Address): EPool {
 }
 
 function createTrancheIfNonExistent(ePoolAddress: Address, eTokenAddress: Address): Tranche {
-  let ePoolContract = EPoolContract.bind(ePoolAddress);
   let ePool = createEPoolIfNonExistent(ePoolAddress);
+  let eToken = createETokenIfNonExistent(eTokenAddress);
+  let ePoolContract = EPoolContract.bind(ePoolAddress);
   let tranche = Tranche.load(eTokenAddress.toHex());
   if (tranche != null) return tranche as Tranche;
   tranche = new Tranche(eTokenAddress.toHex());
   let t = ePoolContract.getTranche(eTokenAddress);
-  tranche.eToken = eTokenAddress;
+  tranche.eToken = eToken.id;
   tranche.sFactorE = t.sFactorE;
   tranche.reserveA = t.reserveA;
   tranche.reserveB = t.reserveB;
@@ -54,43 +55,51 @@ function createTrancheIfNonExistent(ePoolAddress: Address, eTokenAddress: Addres
   return tranche as Tranche;
 }
 
+function createETokenIfNonExistent(eTokenAddress: Address): EToken {
+  let eToken = EToken.load(eTokenAddress.toHex());
+  // let eTokenContract = EPoolContract.bind(eTokenAddress);
+  if (eToken != null) return eToken as EToken;
+  eToken = new EToken(eTokenAddress.toHex());
+  eToken.save();
+  return eToken as EToken;
+}
+
 export function handleSetController(event: SetController): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let ePool = createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   ePool.controller = ePoolContract.getController();
   ePool.save();
 }
 
 export function handleSetAggregator(event: SetAggregator): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let ePool = createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   ePool.aggregator = ePoolContract.getAggregator();
   ePool.save();
 }
 
 export function handleSetFeeRate(event: SetFeeRate): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let ePool = createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   ePool.feeRate = ePoolContract.feeRate();
   ePool.save();
 }
 
 export function handleTransferFees(event: TransferFees): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let ePool = createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   ePool.cumulativeFeeA = ePoolContract.cumulativeFeeA();
   ePool.cumulativeFeeB = ePoolContract.cumulativeFeeB();
   ePool.save();
 }
 
 export function handleAddedTranche(event: AddedTranche): void {
-  createEPoolIfNonExistent(event.address)
   createTrancheIfNonExistent(event.address, event.params.eToken);
 }
 
 export function handleIssuedEToken(event: IssuedEToken): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let tranche = createTrancheIfNonExistent(event.address, event.params.eToken);
+  let ePoolContract = EPoolContract.bind(event.address);
   let t = ePoolContract.getTranche(event.params.eToken);
   tranche.reserveA = t.reserveA;
   tranche.reserveB = t.reserveB;
@@ -98,8 +107,8 @@ export function handleIssuedEToken(event: IssuedEToken): void {
 }
 
 export function handleRedeemedEToken(event: RedeemedEToken): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   let ePool = createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   ePool.cumulativeFeeA = ePoolContract.cumulativeFeeA();
   ePool.cumulativeFeeB = ePoolContract.cumulativeFeeB();
   ePool.save();
@@ -111,8 +120,8 @@ export function handleRedeemedEToken(event: RedeemedEToken): void {
 }
 
 export function handleRebalancedTranches(event: RebalancedTranches): void {
-  let ePoolContract = EPoolContract.bind(event.address);
   createEPoolIfNonExistent(event.address);
+  let ePoolContract = EPoolContract.bind(event.address);
   let tranches = ePoolContract.getTranches();
   for (let i = 0; i < tranches.length; i++) {
     let tranche = createTrancheIfNonExistent(event.address, tranches[i].eToken);

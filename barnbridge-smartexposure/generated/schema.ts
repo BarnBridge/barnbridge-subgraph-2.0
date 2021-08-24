@@ -12,6 +12,46 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class EToken extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save EToken entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save EToken entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("EToken", id.toString(), this);
+  }
+
+  static load(id: string): EToken | null {
+    return store.get("EToken", id) as EToken | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tranche(): string {
+    let value = this.get("tranche");
+    return value.toString();
+  }
+
+  set tranche(value: string) {
+    this.set("tranche", Value.fromString(value));
+  }
+}
+
 export class Tranche extends Entity {
   constructor(id: string) {
     super();
@@ -42,13 +82,13 @@ export class Tranche extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get eToken(): Bytes {
+  get eToken(): string {
     let value = this.get("eToken");
-    return value.toBytes();
+    return value.toString();
   }
 
-  set eToken(value: Bytes) {
-    this.set("eToken", Value.fromBytes(value));
+  set eToken(value: string) {
+    this.set("eToken", Value.fromString(value));
   }
 
   get sFactorE(): BigInt {
