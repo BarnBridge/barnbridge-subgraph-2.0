@@ -12,6 +12,104 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
+export class UserETokenBalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save UserETokenBalance entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save UserETokenBalance entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("UserETokenBalance", id.toString(), this);
+  }
+
+  static load(id: string): UserETokenBalance | null {
+    return store.get("UserETokenBalance", id) as UserETokenBalance | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get balance(): BigInt {
+    let value = this.get("balance");
+    return value.toBigInt();
+  }
+
+  set balance(value: BigInt) {
+    this.set("balance", Value.fromBigInt(value));
+  }
+
+  get user(): string {
+    let value = this.get("user");
+    return value.toString();
+  }
+
+  set user(value: string) {
+    this.set("user", Value.fromString(value));
+  }
+
+  get eToken(): string {
+    let value = this.get("eToken");
+    return value.toString();
+  }
+
+  set eToken(value: string) {
+    this.set("eToken", Value.fromString(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save User entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save User entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("User", id.toString(), this);
+  }
+
+  static load(id: string): User | null {
+    return store.get("User", id) as User | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get eTokenBalances(): Array<string> {
+    let value = this.get("eTokenBalances");
+    return value.toStringArray();
+  }
+
+  set eTokenBalances(value: Array<string>) {
+    this.set("eTokenBalances", Value.fromStringArray(value));
+  }
+}
+
 export class EToken extends Entity {
   constructor(id: string) {
     super();
@@ -40,6 +138,134 @@ export class EToken extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (value === null) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(value as string));
+    }
+  }
+
+  get symbol(): string | null {
+    let value = this.get("symbol");
+    if (value === null || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set symbol(value: string | null) {
+    if (value === null) {
+      this.unset("symbol");
+    } else {
+      this.set("symbol", Value.fromString(value as string));
+    }
+  }
+
+  get decimals(): i32 {
+    let value = this.get("decimals");
+    return value.toI32();
+  }
+
+  set decimals(value: i32) {
+    this.set("decimals", Value.fromI32(value));
+  }
+
+  get userBalances(): Array<string> {
+    let value = this.get("userBalances");
+    return value.toStringArray();
+  }
+
+  set userBalances(value: Array<string>) {
+    this.set("userBalances", Value.fromStringArray(value));
+  }
+
+  get tranche(): string {
+    let value = this.get("tranche");
+    return value.toString();
+  }
+
+  set tranche(value: string) {
+    this.set("tranche", Value.fromString(value));
+  }
+}
+
+export class Rebalance extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Rebalance entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Rebalance entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Rebalance", id.toString(), this);
+  }
+
+  static load(id: string): Rebalance | null {
+    return store.get("Rebalance", id) as Rebalance | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get deltaA(): BigInt {
+    let value = this.get("deltaA");
+    return value.toBigInt();
+  }
+
+  set deltaA(value: BigInt) {
+    this.set("deltaA", Value.fromBigInt(value));
+  }
+
+  get deltaB(): BigInt {
+    let value = this.get("deltaB");
+    return value.toBigInt();
+  }
+
+  set deltaB(value: BigInt) {
+    this.set("deltaB", Value.fromBigInt(value));
+  }
+
+  get rChange(): BigInt {
+    let value = this.get("rChange");
+    return value.toBigInt();
+  }
+
+  set rChange(value: BigInt) {
+    this.set("rChange", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 
   get tranche(): string {
@@ -125,6 +351,15 @@ export class Tranche extends Entity {
 
   set targetRatio(value: BigInt) {
     this.set("targetRatio", Value.fromBigInt(value));
+  }
+
+  get rebalances(): Array<string> {
+    let value = this.get("rebalances");
+    return value.toStringArray();
+  }
+
+  set rebalances(value: Array<string>) {
+    this.set("rebalances", Value.fromStringArray(value));
   }
 
   get ePool(): string {
