@@ -1,5 +1,0 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  dao: Bytes! # address
-}
