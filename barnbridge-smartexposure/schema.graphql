@@ -1,0 +1,55 @@
+type UserETokenBalance @entity {
+  id: ID!
+  balance: BigInt!
+  user: User! @derivedFrom(field: "eTokenBalances")
+  eToken: EToken! @derivedFrom(field: "userBalances")
+}
+
+type User @entity {
+  id: ID!
+  eTokenBalances: [UserETokenBalance!]!
+}
+
+type EToken @entity {
+  id: ID!
+  name: String
+  symbol: String
+  decimals: Int
+  userBalances: [UserETokenBalance!]!
+  tranche: Tranche! @derivedFrom(field: "eToken")
+}
+
+type Rebalance @entity {
+  id: ID!
+  deltaA: BigInt!
+  deltaB: BigInt!
+  rChange: BigInt!
+  timestamp: BigInt!
+  tranche: Tranche! @derivedFrom(field: "rebalances")
+}
+
+type Tranche @entity {
+  id: ID!
+  eToken: EToken!
+  sFactorE: BigInt!
+  reserveA: BigInt!
+  reserveB: BigInt!
+  targetRatio: BigInt!
+  rebalances: [Rebalance!]!
+  ePool: EPool! @derivedFrom(field: "tranches")
+}
+
+type EPool @entity {
+  id: ID!
+  controller: Bytes!
+  eTokenFactory: Bytes!
+  aggregator: Bytes! 
+  tokenA: Bytes!
+  tokenB: Bytes!
+  sFactorA: BigInt!
+  sFactorB: BigInt!
+  tranches: [Tranche!]
+  feeRate: BigInt!
+  cumulativeFeeA: BigInt!
+  cumulativeFeeB: BigInt!
+}
