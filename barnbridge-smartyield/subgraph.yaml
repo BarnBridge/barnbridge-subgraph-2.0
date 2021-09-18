@@ -68,6 +68,32 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_adai.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_aDAI
+    network: mainnet
+    source:
+      address: "0x4a8F559fe216ae733e5cA2F02DFfB3527eD082B5"
+      abi: bb_jBOND_aDAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aDAI
+          file: ./abis/bb_jBOND_aDAI.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_adai.ts
   
   - kind: ethereum/contract
     name: bb_aGUSD
@@ -137,6 +163,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_agusd.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_aGUSD
+    network: mainnet
+    source:
+      address: "0x0EfC5AcFC571B4C3DFfc622627A45aD4A88361aC"
+      abi: bb_jBOND_aGUSD
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aGUSD
+          file: ./abis/bb_jBOND_aGUSD.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_agusd.ts
+
+  - kind: ethereum/contract
     name: bb_aRAI
     network: mainnet
     source:
@@ -202,6 +254,32 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_arai.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_aRAI
+    network: mainnet
+    source:
+      address: "0xF01b8E8Bc9d4F9b6fE35b675719F9DD91DFB7E97"
+      abi: bb_jBOND_aRAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aRAI
+          file: ./abis/bb_jBOND_aRAI.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_arai.ts
 
   - kind: ethereum/contract
     name: bb_aSUSD
@@ -271,6 +349,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_asusd.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_aSUSD
+    network: mainnet
+    source:
+      address: "0xAfB61CB63D3cC55F8ba56396F4d3d852f253fFe1"
+      abi: bb_jBOND_aSUSD
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aSUSD
+          file: ./abis/bb_jBOND_aSUSD.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_asusd.ts
+
+  - kind: ethereum/contract
     name: bb_aUSDC
     network: mainnet
     source:
@@ -336,6 +440,32 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_ausdc.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_aUSDC
+    network: mainnet
+    source:
+      address: "0xD0C453CECAaf2daAC14562e1b342d198C5D790d2"
+      abi: bb_jBOND_aUSDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aUSDC
+          file: ./abis/bb_jBOND_aUSDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_ausdc.ts
 
   - kind: ethereum/contract
     name: bb_aUSDT
@@ -405,6 +535,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_ausdt.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_aUSDT
+    network: mainnet
+    source:
+      address: "0x3591e1736050367B755Ee73296236A96fDD8C6eD"
+      abi: bb_jBOND_aUSDT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_aUSDT
+          file: ./abis/bb_jBOND_aUSDT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_ausdt.ts
+
+  - kind: ethereum/contract
     name: bb_cDAI
     network: mainnet
     source:
@@ -470,6 +626,32 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_cdai.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_cDAI
+    network: mainnet
+    source:
+      address: "0x7F46E3cA055d3Fe08Cc5C1bFB9C4995E7de36fa3"
+      abi: bb_jBOND_cDAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_cDAI
+          file: ./abis/bb_jBOND_cDAI.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_cdai.ts
 
   - kind: ethereum/contract
     name: bb_cUSDC
@@ -539,6 +721,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_cusdc.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_cUSDC
+    network: mainnet
+    source:
+      address: "0x6Fbfa597575e152c683AF7d8D6349904Bb4a8d3D"
+      abi: bb_jBOND_cUSDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_cUSDC
+          file: ./abis/bb_jBOND_cUSDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_cusdc.ts
+
+  - kind: ethereum/contract
     name: bb_cUSDT
     network: mainnet
     source:
@@ -604,6 +812,32 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_cusdt.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_cUSDT
+    network: mainnet
+    source:
+      address: "0xeC169c1D791A93B5076cfE4C37d17AFD8c69AaC1"
+      abi: bb_jBOND_cUSDT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_cUSDT
+          file: ./abis/bb_jBOND_cUSDT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_cusdt.ts
 
   - kind: ethereum/contract
     name: bb_crDAI
@@ -673,6 +907,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_crdai.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_crDAI
+    network: mainnet
+    source:
+      address: "0x831F05aE69EAAAAe5c91B7b9A3Cf5186716F371b"
+      abi: bb_jBOND_crDAI
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_crDAI
+          file: ./abis/bb_jBOND_crDAI.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_crdai.ts
+
+  - kind: ethereum/contract
     name: bb_crUSDC
     network: mainnet
     source:
@@ -740,6 +1000,32 @@ dataSources:
       file: ./src/mapping_bb_sbond_crusdc.ts
 
   - kind: ethereum/contract
+    name: bb_jBOND_crUSDC
+    network: mainnet
+    source:
+      address: "0xAc12EE813B60404701F65E9FeC6A12Ec01b0B1E2"
+      abi: bb_jBOND_crUSDC
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_crUSDC
+          file: ./abis/bb_jBOND_crUSDC.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_crusdc.ts
+
+  - kind: ethereum/contract
     name: bb_crUSDT
     network: mainnet
     source:
@@ -805,3 +1091,29 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
       file: ./src/mapping_bb_sbond_crusdt.ts
+
+  - kind: ethereum/contract
+    name: bb_jBOND_crUSDT
+    network: mainnet
+    source:
+      address: "0x705ae5A358FDbEE6c2B652446AcB10D8bC57029e"
+      abi: bb_jBOND_crUSDT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Transfer
+      abis:
+        - name: bb_jBOND_crUSDT
+          file: ./abis/bb_jBOND_crUSDT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/mapping_bb_jbond_crusdt.ts
