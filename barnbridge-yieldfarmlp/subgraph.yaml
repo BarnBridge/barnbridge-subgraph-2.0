@@ -20,7 +20,7 @@ dataSources:
           file: ./abis/YieldFarmLP.json
       eventHandlers:
         - event: Harvest(indexed address,indexed uint128,uint256)
-          handler: handleHarvest
+          handler: handleHarvestLP
         - event: MassHarvest(indexed address,uint256,uint256)
-          handler: handleMassHarvest
-      file: ./src/mapping.ts
+          handler: handleMassHarvestLP
+      file: ./src/yieldfarmlp-mapping.ts

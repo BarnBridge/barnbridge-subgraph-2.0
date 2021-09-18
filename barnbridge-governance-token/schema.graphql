@@ -1,6 +1,22 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  spender: Bytes! # address
+type Transfer @entity {
+    count: BigInt!
+    id: ID!
+    blockNumber: Int!
+    blockTimestamp: Int!
+    txHash: String!
+    to: Bytes!
+    from: Bytes!
+    value: BigInt!
 }
+
+type Approval @entity {
+    count: BigInt!
+    id: ID!
+    blockNumber: Int!
+    blockTimestamp: Int!
+    txHash: String!
+    owner: Bytes!
+    spender: Bytes!
+    value: BigInt!
+}
+

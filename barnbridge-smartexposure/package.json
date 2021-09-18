@@ -2,8 +2,14 @@
   "name": "barnbridge-smartexposure-subgraph",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "NETWORK=local NO_DEPLOY=true ./deploy.sh",
-    "deploy:local": "NETWORK=local ./deploy.sh"
+    "build:local": "NETWORK=local NO_DEPLOY=true ./deploy.sh",
+    "deploy:local": "NETWORK=local ./deploy.sh",
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ barnbridge-smartexposure",
+    "create-local": "graph create --node http://localhost:8020/ barnbridge-smartexposure",
+    "remove-local": "graph remove --node http://localhost:8020/ barnbridge-smartexposure",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 barnbridge-smartexposure"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.21.1",

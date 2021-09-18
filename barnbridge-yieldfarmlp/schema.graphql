@@ -1,6 +1,21 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  user: Bytes! # address
-  epochId: BigInt! # uint128
+type HarvestLP @entity {
+    count: BigInt!
+    id: ID!
+    blockNumber: Int!
+    blockTimestamp: Int!
+    txHash: String!
+    user: Bytes!
+    epochId: Int!
+    amount: BigInt!
+}
+
+type MassHarvestLP @entity {
+    count: BigInt!
+    id: ID!
+    blockNumber: Int!
+    blockTimestamp: Int!
+    txHash: String!
+    user: Bytes!
+    epochsHarvested: Int!
+    totalValue: BigInt!
 }

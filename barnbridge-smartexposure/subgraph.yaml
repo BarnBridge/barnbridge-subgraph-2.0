@@ -1,0 +1,138 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: EPoolPeriphery
+    network: mainnet
+    source:
+      abi: EPoolPeriphery
+      address: "0x33c8d6f8271675eda1a0e72558d4904c96c7a888"
+      startBlock: 12760848
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - EPool
+        - Tranche
+        - EToken
+        - User
+        - UserETokenBalance
+      abis:
+        - name: EPoolPeriphery
+          file: ./abis/EPoolPeriphery.json
+        - name: EPool
+          file: ./abis/EPool.json
+        - name: EToken
+          file: ./abis/EToken.json
+      eventHandlers:
+        - event: IssuedEToken(indexed address,indexed address,uint256,uint256,uint256,address)
+          handler: handleIssuedETokenViaPeriphery
+        - event: RedeemedEToken(indexed address,indexed address,uint256,uint256,uint256,address)
+          handler: handleRedeemedETokenViaPeriphery
+      file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: EPool_WETH_USDC
+    network: mainnet
+    source:
+      abi: EPool
+      address: "0x9625885db4e75e9dccf856e640886853bc6d6584"
+      startBlock: 12760848
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - EPool
+        - Tranche
+        - EToken
+        - User
+        - UserETokenBalance
+      abis:
+        - name: EPool
+          file: ./abis/EPool.json
+        - name: EToken
+          file: ./abis/EToken.json
+      eventHandlers:
+        - event: AddedTranche(indexed address)
+          handler: handleAddedTranche
+        - event: IssuedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleIssuedEToken
+        - event: RebalancedTranches(uint256,uint256,uint256,uint256)
+          handler: handleRebalancedTranches
+        - event: RedeemedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleRedeemedEToken
+        - event: SetAggregator(address,bool)
+          handler: handleSetAggregator
+        - event: SetController(address)
+          handler: handleSetController
+        - event: SetFeeRate(uint256)
+          handler: handleSetFeeRate
+        - event: TransferFees(indexed address,uint256,uint256)
+          handler: handleTransferFees
+      file: ./src/mapping.ts
+
+  - kind: ethereum/contract
+    name: EPool_WETH_WBTC
+    network: mainnet
+    source:
+      abi: EPool
+      address: "0x1ff76b7cc4252f8281f49f005ccf2ea477344830"
+      startBlock: 12760848
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - EPool
+        - Tranche
+        - EToken
+      abis:
+        - name: EPool
+          file: ./abis/EPool.json
+        - name: EToken
+          file: ./abis/EToken.json
+      eventHandlers:
+        - event: AddedTranche(indexed address)
+          handler: handleAddedTranche
+        - event: IssuedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleIssuedEToken
+        - event: RebalancedTranches(uint256,uint256,uint256,uint256)
+          handler: handleRebalancedTranches
+        - event: RedeemedEToken(indexed address,uint256,uint256,uint256,address)
+          handler: handleRedeemedEToken
+        - event: SetAggregator(address,bool)
+          handler: handleSetAggregator
+        - event: SetController(address)
+          handler: handleSetController
+        - event: SetFeeRate(uint256)
+          handler: handleSetFeeRate
+        - event: TransferFees(indexed address,uint256,uint256)
+          handler: handleTransferFees
+      file: ./src/mapping.ts
+
+templates:
+  - kind: ethereum/contract
+    name: EToken
+    network: mainnet
+    source:
+      abi: EToken
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - EPool
+        - Tranche
+        - EToken
+        - User
+        - UserTokenBalance
+      abis:
+        - name: EToken
+          file: ./abis/EToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts

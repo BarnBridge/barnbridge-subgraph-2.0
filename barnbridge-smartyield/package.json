@@ -1,0 +1,16 @@
+{
+  "name": "barnbridge-smartyield",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ barnbridge-smartyield",
+    "create-local": "graph create --node http://localhost:8020/ barnbridge-smartyield",
+    "remove-local": "graph remove --node http://localhost:8020/ barnbridge-smartyield",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 barnbridge-smartyield"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.21.1",
+    "@graphprotocol/graph-ts": "0.20.1"
+  }
+}
