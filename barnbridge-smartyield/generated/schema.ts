@@ -68,4 +68,13 @@ export class ExampleEntity extends Entity {
   set spender(value: Bytes) {
     this.set("spender", Value.fromBytes(value));
   }
+
+  get approved(): Bytes {
+    let value = this.get("approved");
+    return value.toBytes();
+  }
+
+  set approved(value: Bytes) {
+    this.set("approved", Value.fromBytes(value));
+  }
 }

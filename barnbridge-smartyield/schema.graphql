@@ -3,4 +3,5 @@ type ExampleEntity @entity {
   count: BigInt!
   owner: Bytes! # address
   spender: Bytes! # address
+  approved: Bytes! # address
 }
