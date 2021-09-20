@@ -3,7 +3,7 @@
 # Exit script as soon as a command fails.
 set -o errexit
 
-mustache config/$CONFIG subgraph.template.yaml > subgraph.yaml
+mustache config/$CONFIG.json subgraph.template.yaml > subgraph.yaml
 
 # Run codegen and build
 graph codegen 
