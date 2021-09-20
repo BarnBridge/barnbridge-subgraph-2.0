@@ -1,0 +1,171 @@
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+}
+
+type Transaction @entity {
+  id: ID!
+  tokenAddress: Bytes!
+  actionType: TransactionType!
+  userAddress: Bytes!
+  amount: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: String!
+}
+
+type TransactionCount @entity {
+  id: ID!
+  count: BigInt!
+}
+
+# Proposal Entity created once ProposalCreated event is fired
+# The event provides only the ID of the proposal, so in order for the data to be populated a Contract call must be executed to load and populate the proposal info
+type Proposal @entity {
+  "The ID of the proposal"
+  id: ID!
+  proposer: Bytes!
+  description: String!
+  title: String!
+  "The block timestamp -1 at which the proposal was created"
+  createTime: Int!
+  targets: [Bytes!]!
+  values: [BigInt!]!
+  signatures: [String!]!
+  calldatas: [Bytes!]!
+  " The block timestamp when the proposal was created. Should be createTime + 1"
+  blockTimestamp: Int!
+  warmUpDuration: Int!
+  activeDuration: Int!
+  queueDuration: Int!
+  gracePeriodDuration: Int!
+  acceptanceThreshold: Int!
+  minQuorum: Int!
+  state: ProposalEvent!
+  eta: Int!
+  "Should be accounted in BigInt, but saved as String due to how the UI expects it"
+  forVotes: BigInt!
+  "Should be accounted in BigInt, but saved as String due to how the UI expects"
+  againstVotes: BigInt!
+  "Number of voters that voted for"
+  forVotesCount: Int!
+  "Number of voters that voted against"
+  againstVotesCount: Int!
+  events: [ProposalStateEvent!]! @derivedFrom(field: "proposal")
+  votingHistory: [Vote!]! @derivedFrom(field: "proposal")
+  votesCount: Int!
+}
+
+# The entity is created each time a proposal event occurs.
+type ProposalStateEvent @entity {
+  "Id is generated: {proposalID}-{eventType}"
+  id: ID!
+  "The proposal ID"
+  proposalId: Int!
+  "The caller of the TX"
+  caller: Bytes!
+  "The type of the event"
+  eventType: ProposalEvent!
+  "The time at which the event occurred"
+  createTime: Int!
+  "The transaction hash of the event"
+  txHash: String!
+  "Present only in QUEUED event types"
+  eta: Int!
+  "The proposal this status change is linked to"
+  proposal: Proposal!
+}
+
+# An Enum list matching the proposal events from the Governance contract
+# Important! not to be confused with Proposal States! There are more proposal states but they cannot be computed from the subgraph as they are time dependant
+# The client must WILL able to and MUST reconstruct all State History based on the events and proposal data
+enum ProposalEvent {
+  CREATED,
+  QUEUED,
+  EXECUTED,
+  CANCELED
+}
+
+# Voter entity used to represent addresses that have interacted with the Governance/DAO system
+type Voter @entity {
+  "The ethereum address of a voter"
+  id: ID! # !Not compatible with the UI. UI must be updated from `address` to `id`
+  "Number of tokens staked"
+  tokensStaked: BigInt!
+  "The timestamp until the voter has locked his tokens"
+  lockedUntil: Int!
+  "The amount of delegating power the voter has"
+  delegatedPower: BigInt!
+  "Number of times the voter voted"
+  votes: Int!
+  "Number of proposals created by this address"
+  proposals: Int!
+  "Whether or not the address delegated "
+  hasActiveDelegation: Boolean!
+  "Whether the account is currently a barn user"
+  isBarnUser: Boolean!
+  votingHistory: [Vote!]! @derivedFrom(field: "voter")
+  "Used to efficiently query voters sorted by staked tokens"
+  _tokensStakedWithoutDecimals: Int!
+}
+
+type Vote @entity {
+  "ID is generated: {proposalId}-{voterAddress} for normal proposals and {proposal}-AP-{voterAddress} for Abrogated proposals"
+  id: ID!
+  "The address of the voter"
+  address: Bytes!
+  proposalId: BigInt!
+  blockTimestamp: Int!
+  power: BigInt!
+  support: Boolean!
+  "Used to efficiently votes by power"
+  _powerWithoutDecimals: Int!
+  proposal: Proposal! # Used for derivedFrom
+  abrogatedProposal: AbrogationProposal! # Used for derivedFrom
+  voter: Voter! # Used for derivedFrom
+}
+
+type Overview @entity {
+  id: ID!
+  "Average lock time"
+  avgLockTimeSeconds: Int!
+  "Total number of holders. Includes addresses with balance 0 in their address, but have staked it in the Barn"
+  holders: Int! # TODO it seems that there is a bug with this prop
+  "Total delegated power"
+  totalDelegatedPower: BigInt!
+  "Number of voters"
+  voters: Int!
+  "Barn users"
+  barnUsers: Int!
+  "Count of all proposals that have been created"
+  proposals: Int!
+  "Used to efficiently calculate avgLockTimeSeconds"
+  _sumLockTime: BigInt!
+  "Used to efficiently calculate avgLockTimeSeconds"
+  _numberOfLocks: BigInt!
+  "Addresses that have non-zero token balance"
+  _holdersWithNonZeroBalance: Int!
+}
+
+type AbrogationProposal @entity {
+  "The ID is generated: {proposalID}-AP"
+  id: ID!
+  "The creator of the proposal"
+  creator: Bytes!
+  "The creation timestamp"
+  createTime: Int!
+  description: String!
+  forVotes: BigInt!
+  againstVotes: BigInt!
+  votesCount: Int!
+  "Number of voters that voted for"
+  forVotesCount: Int!
+  "Number of voters that voted against"
+  againstVotesCount: Int!
+  votingHistory: [Vote!]! @derivedFrom(field: "abrogatedProposal")
+}
+
+type Holder @entity {
+  "Address of the holder"
+  id: ID!
+  balance: BigInt!
+}

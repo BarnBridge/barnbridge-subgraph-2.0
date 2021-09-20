@@ -1,0 +1,121 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Token
+    network: {{network}}
+    source:
+      address: '{{Token}}'
+      abi: Token
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Overview
+      abis:
+        - name: Token
+          file: ./abis/Token.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mappings.ts
+  - kind: ethereum/contract
+    name: Staking
+    network: {{network}}
+    source:
+      address: '{{Staking}}'
+      abi: Staking
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - TransactionCount
+        - Voter
+      abis:
+        - name: Staking
+          file: ./abis/Staking.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed address,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,indexed address,uint256)
+          handler: handleWithdraw
+      file: ./src/staking/mapping.ts
+  - kind: ethereum/contract
+    name: Barn
+    network: {{network}}
+    source:
+      address: '{{Barn}}'
+      abi: Barn
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+        - TransactionCount
+        - Voter
+      abis:
+        - name: Barn
+          file: ./abis/BarnFacet.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: Withdraw(indexed address,uint256,uint256)
+          handler: handleWithdraw
+        - event: Lock(indexed address,uint256)
+          handler: handleLock
+        - event: Delegate(indexed address,indexed address)
+          handler: handleDelegate
+        - event: DelegatedPowerIncreased(indexed address,indexed address,uint256,uint256)
+          handler: handleDelegatedPowerIncreased
+        - event: DelegatedPowerDecreased(indexed address,indexed address,uint256,uint256)
+          handler: handleDelegatedPowerDecreased
+      file: ./src/mappings.ts
+
+  - kind: ethereum/contract
+    name: Governance
+    network: {{network}}
+    source:
+      address: '{{Governance}}'
+      abi: Governance
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Proposal
+        - ProposalStateEvent
+        - Voter
+      abis:
+        - name: Governance
+          file: ./abis/Governance.json
+      eventHandlers:
+        - event: ProposalCreated(indexed uint256)
+          handler: handleProposalCreated
+        - event: Vote(indexed uint256,indexed address,bool,uint256)
+          handler: handleVote
+        - event: VoteCanceled(indexed uint256,indexed address)
+          handler: handleVoteCanceled
+        - event: ProposalQueued(indexed uint256,address,uint256)
+          handler: handleProposalQueued
+        - event: ProposalExecuted(indexed uint256,address)
+          handler: handleProposalExecuted
+        - event: ProposalCanceled(indexed uint256,address)
+          handler: handleProposalCanceled
+        - event: AbrogationProposalStarted(indexed uint256,address)
+          handler: handleAbrogationProposalStarted
+        - event: AbrogationProposalExecuted(indexed uint256,address)
+          handler: handleAbrogationProposalExecuted
+        - event: AbrogationProposalVote(indexed uint256,indexed address,bool,uint256)
+          handler: handleAbrogationProposalVote
+        - event: AbrogationProposalVoteCancelled(indexed uint256,indexed address)
+          handler: handleAbrogationProposalVoteCancelled
+      file: ./src/mappings.ts

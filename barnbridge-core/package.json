@@ -1,5 +1,5 @@
 {
-  "name": "barnbridge-smartexposure-subgraph",
+  "name": "barnbridge-core-subgraph",
   "license": "UNLICENSED",
   "scripts": {
     "build": "CONFIG=$npm_config_config GRAPH=local NO_DEPLOY=true ./deploy.sh",

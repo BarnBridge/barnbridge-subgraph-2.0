@@ -1,0 +1,9 @@
+{
+  "network": "mainnet",
+  "description": "BarnBridge DAO (local)",
+  "startBlock": 12502576,
+  "Staking": "0x2d615795a8bdb804541C69798F13331126BA0c09",
+  "Governance": "0xa8047C2a86D5A188B0e15C3C10E2bc144cB272C2",
+  "Barn": "0x7b86600211e62B597E7CEA03476b9EFEb6872962",
+  "Token": "0x618679dF9EfCd19694BB1daa8D00718Eacfa2883"
+}

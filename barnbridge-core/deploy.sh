@@ -31,13 +31,13 @@ fi
 
 # Create subgraph if missing
 {
-  graph create barnbridge/barnbridge-smart-exposure --node ${GRAPH_NODE}
+  graph create barnbridge/barnbridge-core --node ${GRAPH_NODE}
 } || {
   echo 'Subgraph was already created'
 }
 
 # Deploy subgraph
-graph deploy barnbridge/barnbridge-smart-exposure --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
+graph deploy barnbridge/barnbridge-core --ipfs ${IPFS_NODE} --node ${GRAPH_NODE}
 
 # Remove manifest
 rm subgraph.yaml

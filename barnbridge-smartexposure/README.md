@@ -1,26 +1,20 @@
 # BarnBridge SmartExposure Subgraph
 
-## Quick Start
+## Running Local Graph Node
 
-### Install
 ```
-$ yarn install
-```
-
-### Build
-```
-$ yarn build
+RPC_URL=<RPC_URL> docker-compose up
 ```
 
-### Deploy (locally)
-1. clone [graph-node](https://github.com/graphprotocol/graph-node)
-2. cd into graph-node/docker
-3. run `docker-compose up` (requires docker)
-4. deploy subgraph after graph-node is synced
-```
-$ # barnbridge-smartexposure/
-$ yarn deploy:local 
-```
+## Development
+
+There are `npm scripts` for all the stages of subgraph development.
+
+1. Building the subgraph (code generation + creating the subgraph): `npm build`
+2. Deploying to the Local Graph Node: `npm run deploy:local --config={config.json}`
+3. Deploying to the Rinkeby Graph Node: `npm run deploy:rinkeby --config={config.json`
+4. Deploying to the Mainnet Graph Node: `npm run deploy:mainnet --config={config.json}`
+Where `{config.json}` is the file name of the config you want to deploy. F.e if you want to deploy locally the mainnet config execute: `npm run deploy:local --config=mainnet.json`
 
 ### Interact (locally)
 - open [Explorer](http://127.0.0.1:8000/subgraphs/name/barnbridge/barnbridge-smart-exposure-local/graphql) in your browser

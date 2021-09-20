@@ -1,0 +1,9 @@
+{
+  "network": "rinkeby",
+  "description": "BarnBridge DAO (dev)",
+  "startBlock": 9280943,
+  "Staking": "0x4279d2D9D5641876AA1328ad7Abf90c90f81851F",
+  "Governance": "0x12E9B3A983A5f0e125CD7E59817e13330B9F87A9",
+  "Barn": "0x6ce06b33bdAa947213370B180febdd6Df6b00274",
+  "Token": "0x6ECE05018108E3b817511C177a3b7707eA030ba1"
+}
